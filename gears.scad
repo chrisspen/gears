@@ -248,7 +248,26 @@ module spur_gear(modul, tooth_number, width, bore, pressure_angle = 20, helix_an
     }
 }
 
-/*  Herringbone; uses the module "spur_gear"
+/* Herringbone_rack; uses the module "rack"
+    modul = Height of the Tooth Tip above the Rolling LIne
+    length = Length of the Rack
+    height = Height of the Rack to the Pitch Line
+    width = Width of a Tooth
+    pressure_angle = Pressure Angle, Standard = 20° according to DIN 867. Should not exceed 45°.
+    helix_angle = Helix Angle of the Rack Transverse Axis; 0° = Spur Teeth */
+module herringbone_rack(modul, length, height, width, pressure_angle = 20, helix_angle) {
+ width = width/2;
+ translate([0,0,width]){
+        union(){
+            rack(modul, length, height, width, pressure_angle, helix_angle);      // bottom Half
+            mirror([0,0,1]){
+                rack(modul, length, height, width, pressure_angle, helix_angle);  // top Half
+            }
+        }
+    }
+}
+
+/* Herringbone_gear; uses the module "spur_gear"
     modul = Height of the Tooth Tip beyond the Pitch Circle
     tooth_number = Number of Gear Teeth
     width = tooth_width
@@ -897,7 +916,9 @@ module worm_gear(modul, tooth_number, thread_starts, width, length, worm_bore, g
     }
 }
 
-// rack(modul=1, length=30, height=5, width=5, pressure_angle=20, helix_angle=20);
+//rack(modul=1, length=30, height=5, width=10, pressure_angle=20, helix_angle=20);
+
+herringbone_rack(modul=1, length=60, height=5, width=10, pressure_angle=20, helix_angle=45);
 
 //spur_gear (modul=1, tooth_number=30, width=5, bore=4, pressure_angle=20, helix_angle=20, optimized=true);
 
@@ -921,4 +942,4 @@ module worm_gear(modul, tooth_number, thread_starts, width, length, worm_bore, g
 
 // worm(modul=1, thread_starts=2, length=15, bore=4, pressure_angle=20, lead_angle=10, together_built=true);
 
-worm_gear(modul=1, tooth_number=30, thread_starts=2, width=8, length=20, worm_bore=4, gear_bore=4, pressure_angle=20, lead_angle=10, optimized=1, together_built=1, show_spur=1, show_worm=1);
+// worm_gear(modul=1, tooth_number=30, thread_starts=2, width=8, length=20, worm_bore=4, gear_bore=4, pressure_angle=20, lead_angle=10, optimized=1, together_built=1, show_spur=1, show_worm=1);
