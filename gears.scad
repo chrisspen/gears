@@ -1,25 +1,27 @@
-$fn = 96;
+$fn = 200;
 
 /* Library for Involute Gears, Screws and Racks
 
 This library contains the following modules
-- rack(modul, length, height, width, pressure_angle=20, helix_angle=0)
-- spur_gear(modul, tooth_number, width, bore, pressure_angle=20, helix_angle=0, optimized=true)
-- herringbone_gear(modul, tooth_number, width, bore, pressure_angle=20, helix_angle=0, optimized=true)
-- rack_and_pinion (modul, rack_length, gear_teeth, rack_height, gear_bore, width, pressure_angle=20, helix_angle=0, together_built=true, optimized=true)
-- ring_gear(modul, tooth_number, width, rim_width, pressure_angle=20, helix_angle=0)
-- herringbone_ring_gear(modul, tooth_number, width, rim_width, pressure_angle=20, helix_angle=0)
-- planetary_gear(modul, sun_teeth, planet_teeth, number_planets, width, rim_width, bore, pressure_angle=20, helix_angle=0, together_built=true, optimized=true)
-- bevel_gear(modul, tooth_number,  partial_cone_angle, tooth_width, bore, pressure_angle=20, helix_angle=0)
-- bevel_herringbone_gear(modul, tooth_number, partial_cone_angle, tooth_width, bore, pressure_angle=20, helix_angle=0)
-- bevel_gear_pair(modul, gear_teeth, pinion_teeth, axis_angle=90, tooth_width, bore, pressure_angle = 20, helix_angle=0, together_built=true)
-- bevel_herringbone_gear_pair(modul, gear_teeth, pinion_teeth, axis_angle=90, tooth_width, bore, pressure_angle = 20, helix_angle=0, together_built=true)
-- worm(modul, thread_starts, length, bore, pressure_angle=20, lead_angle=10, together_built=true)
-- worm_gear(modul, tooth_number, thread_starts, width, length, worm_bore, gear_bore, pressure_angle=20, lead_angle=0, optimized=true, together_built=true)
+- rack(modul, length, height, width, pressure_angle, helix_angle)
+- herringbone_rack(modul, length, height, width, pressure_angle, helix_angle)
+- spur_gear(modul, tooth_number, width, bore, pressure_angle, helix_angle, optimized)
+- herringbone_gear(modul, tooth_number, width, bore, pressure_angle, helix_angle, optimized)
+- rack_and_pinion (modul, rack_length, gear_teeth, rack_height, gear_bore, width, pressure_angle, helix_angle, together_built, optimized)
+- ring_gear(modul, tooth_number, width, rim_width, pressure_angle, helix_angle)
+- herringbone_ring_gear(modul, tooth_number, width, rim_width, pressure_angle, helix_angle)
+- planetary_gear(modul, sun_teeth, planet_teeth, number_planets, width, rim_width, bore, pressure_angle, helix_angle, together_built, optimized)
+- bevel_gear(modul, tooth_number, partial_cone_angle, tooth_width, bore, pressure_angle, helix_angle)
+- bevel_herringbone_gear(modul, tooth_number, partial_cone_angle, tooth_width, bore, pressure_angle, helix_angle)
+- bevel_gear_pair(modul, gear_teeth, pinion_teeth, axis_angle, tooth_width, bore, pressure_angle, helix_angle, together_built)
+- bevel_herringbone_gear_pair(modul, gear_teeth, pinion_teeth, axis_angle, tooth_width, bore, pressure_angle, helix_angle, together_built)
+- worm(modul, thread_starts, length, bore, pressure_angle, lead_angle, together_built)
+- worm_gear(modul, tooth_number, thread_starts, width, length, worm_bore, gear_bore, pressure_angle, lead_angle, optimized, together_built)
 
 Examples of each module are commented out at the end of this file
 
-Author:      Dr Jörg Janssen
+Lead Author:      Dr Jörg Janssen
+Contributions By: Keith Emery,
 Last Verified On:      1. June 2018
 Version:    2.2
 License:     Creative Commons - Attribution, Non Commercial, Share Alike
@@ -93,10 +95,10 @@ function spiral(a, r0, phi) =
     a*phi + r0; 
 
 /*  Copy and rotate a Body */
-module copier(vect, number, distance, winkel){
+module copier(vect, number, distance, corner){
     for(i = [0:number-1]){
         translate(v=vect*distance*i)
-            rotate(a=i*winkel, v = [0,0,1])
+            rotate(a=i*corner, v = [0,0,1])
                 children(0);
     }
 }
@@ -248,7 +250,26 @@ module spur_gear(modul, tooth_number, width, bore, pressure_angle = 20, helix_an
     }
 }
 
-/*  Herringbone; uses the module "spur_gear"
+/* Herringbone_rack; uses the module "rack"
+    modul = Height of the Tooth Tip above the Rolling LIne
+    length = Length of the Rack
+    height = Height of the Rack to the Pitch Line
+    width = Width of a Tooth
+    pressure_angle = Pressure Angle, Standard = 20° according to DIN 867. Should not exceed 45°.
+    helix_angle = Helix Angle of the Rack Transverse Axis; 0° = Spur Teeth */
+module herringbone_rack(modul, length, height, width, pressure_angle = 20, helix_angle) {
+ width = width/2;
+ translate([0,0,width]){
+        union(){
+            rack(modul, length, height, width, pressure_angle, helix_angle);      // bottom Half
+            mirror([0,0,1]){
+                rack(modul, length, height, width, pressure_angle, helix_angle);  // top Half
+            }
+        }
+    }
+}
+
+/* Herringbone_gear; uses the module "spur_gear"
     modul = Height of the Tooth Tip beyond the Pitch Circle
     tooth_number = Number of Gear Teeth
     width = tooth_width
@@ -897,7 +918,83 @@ module worm_gear(modul, tooth_number, thread_starts, width, length, worm_bore, g
     }
 }
 
-// rack(modul=1, length=30, height=5, width=5, pressure_angle=20, helix_angle=20);
+/* Mountable-rack; uses module "rack"
+    modul = Height of the Tooth Tip above the Rolling LIne
+    length = Length of the Rack
+    height = Height of the Rack to the Pitch Line
+    width = Width of a Tooth
+    pressure_angle = Pressure Angle, Standard = 20° according to DIN 867. Should not exceed 45°.
+    helix_angle = Helix Angle of the Rack Transverse Axis; 0° = Spur Teeth 
+    rows = Rows of fastners.  Generally this will be one row, but very wide racks may require more.
+    columbs = Columbs of fastners.  For a single row of 4 fastners, specify 1 row, 4 columbs, etc.
+    profile = Metric standard profile for machine screws, M4 = 4, M6 = 6 etc.
+    
+    head = Style of machine screw to accomodate.
+    PH = Pan Head, C = Countersunk, RC = Raised Countersunk, CS = Cap Screw, CSS = Countersunk Socket Screw. */
+module mountable_rack (modul, length, height, width, pressure_angle, helix_angle, rows, columbs, profile, head) {
+    difference() {
+        rack(modul, length, height, width, pressure_angle, helix_angle);
+        columb_spacing = columbs+1/length;
+        for ( i = [-(length/2) : columb_spacing : columbs] ){                
+        translate([columb_spacing, 0, 0])
+        if (head=="PH"){
+                translate([0,modul,width/2])
+                rotate([90,0,0])
+                cylinder(h=height+modul, d=profile, center=false);
+                translate([0,modul,width/2])
+                rotate([90,0,0])
+                cylinder(h=profile*0.6+modul*2.25, d=profile*2, center=false);
+            }
+        if (head=="CS"){
+                translate([0,modul,width/2])
+                rotate([90,0,0])
+                cylinder(h=height+modul, d=profile, center=false);
+                translate([0,modul,width/2])
+                rotate([90,0,0])
+                cylinder(h=profile*1.25+modul*2.25, d=profile*1.5, center=false);
+            }
+        if (head=="C"){
+                translate([0,modul,width/2])
+                rotate([90,0,0])
+                cylinder(h=height+modul, d=profile, center=false);
+                translate([0,modul,width/2])
+                rotate([90,0,0])
+                cylinder(h=modul*2.25, d=profile*2, center=false);
+                translate([0,-modul*1.25,width/2])
+                rotate([90,0,0])
+                cylinder (h=profile/2, d1=profile*2, d2=profile, center=false);
+            }
+        if (head=="RC"){
+                translate([0,modul,width/2])
+                rotate([90,0,0])
+                cylinder(h=height+modul, d=profile, center=false);
+                translate([0,modul,width/2])
+                rotate([90,0,0])
+                cylinder(h=modul*2.25+profile/4, d=profile*2, center=false);
+                translate([0,-modul*1.25-profile/4,width/2])
+                rotate([90,0,0])
+                cylinder (h=profile/2, d1=profile*2, d2=profile, center=false);
+            }
+        if (head=="CSS"){
+                translate([0,modul,width/2])
+                rotate([90,0,0])
+                cylinder(h=height+modul, d=profile, center=false);
+                translate([0,modul,width/2])
+                rotate([90,0,0])
+                cylinder(h=modul*2.25, d=profile*2, center=false);
+                translate([0,-modul*1.25,width/2])
+                rotate([90,0,0])
+                cylinder (h=profile*0.6, d1=profile*2, d2=profile, center=false);
+                }
+           }
+      }
+ }
+
+mountable_rack(modul=1, length=40, height=10, width=20, pressure_angle=20, helix_angle=0, profile=3, head="CS",columbs=2);
+
+//rack(modul=1, length=30, height=5, width=20, pressure_angle=20, helix_angle=0);
+
+//herringbone_rack(modul=1, length=60, height=5, width=10, pressure_angle=20, helix_angle=45);
 
 //spur_gear (modul=1, tooth_number=30, width=5, bore=4, pressure_angle=20, helix_angle=20, optimized=true);
 
@@ -907,18 +1004,18 @@ module worm_gear(modul, tooth_number, thread_starts, width, length, worm_bore, g
 
 //ring_gear (modul=1, tooth_number=30, width=5, rim_width=3, pressure_angle=20, helix_angle=20);
 
-// herringbone_ring_gear (modul=1, tooth_number=30, width=5, rim_width=3, pressure_angle=20, helix_angle=30);
+//herringbone_ring_gear (modul=1, tooth_number=30, width=5, rim_width=3, pressure_angle=20, helix_angle=30);
 
 //planetary_gear(modul=1, sun_teeth=16, planet_teeth=9, number_planets=5, width=5, rim_width=3, bore=4, pressure_angle=20, helix_angle=30, together_built=true, optimized=true);
 
 //bevel_gear(modul=1, tooth_number=30,  partial_cone_angle=45, tooth_width=5, bore=4, pressure_angle=20, helix_angle=20);
 
-// bevel_herringbone_gear(modul=1, tooth_number=30, partial_cone_angle=45, tooth_width=5, bore=4, pressure_angle=20, helix_angle=30);
+//bevel_herringbone_gear(modul=1, tooth_number=30, partial_cone_angle=45, tooth_width=5, bore=4, pressure_angle=20, helix_angle=30);
 
-// bevel_gear_pair(modul=1, gear_teeth=30, pinion_teeth=11, axis_angle=100, tooth_width=5, bore=4, pressure_angle = 20, helix_angle=20, together_built=true);
+//bevel_gear_pair(modul=1, gear_teeth=30, pinion_teeth=11, axis_angle=100, tooth_width=5, bore=4, pressure_angle = 20, helix_angle=20, together_built=true);
 
-// bevel_herringbone_gear_pair(modul=1, gear_teeth=30, pinion_teeth=11, axis_angle=100, tooth_width=5, bore=4, pressure_angle = 20, helix_angle=30, together_built=true);
+//bevel_herringbone_gear_pair(modul=1, gear_teeth=30, pinion_teeth=11, axis_angle=100, tooth_width=5, bore=4, pressure_angle = 20, helix_angle=30, together_built=true);
 
-// worm(modul=1, thread_starts=2, length=15, bore=4, pressure_angle=20, lead_angle=10, together_built=true);
+//worm(modul=1, thread_starts=2, length=15, bore=4, pressure_angle=20, lead_angle=10, together_built=true);
 
-worm_gear(modul=1, tooth_number=30, thread_starts=2, width=8, length=20, worm_bore=4, gear_bore=4, pressure_angle=20, lead_angle=10, optimized=1, together_built=1, show_spur=1, show_worm=1);
+//worm_gear(modul=1, tooth_number=30, thread_starts=2, width=8, length=20, worm_bore=4, gear_bore=4, pressure_angle=20, lead_angle=10, optimized=1, together_built=1, show_spur=1, show_worm=1);
