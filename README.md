@@ -28,7 +28,7 @@ schraegungswinkel = bevel angle perpendicular to the rack's length; 0° = straig
 
 <h4>Parametric Involute Spur Gear</h4>
 
-Creates an involute spur gear without profile displacement following DIN 867 / DIN 58400. Two gears will mesh if their modules are the same and their helix angles opposite. The centre distance of two meshing gears A and B with module m and tooth numbers z<sub>a</sub> and z<sub>b</sub> is 
+Creates an involute spur gear without profile displacement following DIN 867 / DIN 58400. Two gears will mesh if their modules are the same and their helix angles opposite. The centre distance of two meshing gears A and B with module m and tooth numbers z<sub>a</sub> and z<sub>b</sub> is
 <sup>m</sub></sup>/<sub>2</sub>·(z<sub>a</sub> + z<sub>b</sub>)
 
 Helical gears run more smoothly than gears with straight teeth. However, they also create axial loads which the bearings must be designed to contain. Recommendations for the helix angle depending on the module can be found in DIN 3978.
@@ -50,7 +50,7 @@ optimiert = if true, create holes for material/weight reduction resp. surface in
 
 <h4>Parametric Herringbone Involute Spur Gear</h4>
 
-Creates a herringbone spur gear without profile displacement. Two gears will mesh if their modules are the same and their helix angles opposite. The centre distance of two meshing gears with module m and tooth numbers z<sub>a</sub> and z<sub>b</sub> is 
+Creates a herringbone spur gear without profile displacement. Two gears will mesh if their modules are the same and their helix angles opposite. The centre distance of two meshing gears with module m and tooth numbers z<sub>a</sub> and z<sub>b</sub> is
 <sup>m</sub></sup>/<sub>2</sub>·(z<sub>a</sub> + z<sub>b</sub>)
 
 Herringbone gears run more smoothly than gears with straight teeth. They also do not create torque on the axis like helical gears do.
@@ -244,7 +244,7 @@ Creates a cylidrical worm (archimedean spiral) following DIN 3975.
 
 The worm's pitch circle r can be calculated out of its module m, number of threads z and lead angle γ:
 
-r = m·z·<sup>1</sup>/<sub>2sinγ</sub> 
+r = m·z·<sup>1</sup>/<sub>2sinγ</sub>
 
 <h5>Format:</h5>
 schnecke(modul, gangzahl, laenge, bohrung, eingriffswinkel=20, steigungswinkel=10, zusammen_gebaut=true)
