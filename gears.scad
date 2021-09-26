@@ -6,7 +6,7 @@ This library contains the following modules
 - rack(modul, length, height, width, pressure_angle=20, helix_angle=0)
 - mountable_rack(modul, length, height, width, pressure_angle=20, helix_angle=0, fastners, profile, head)
 - herringbone_rack(modul, length, height, width, pressure_angle = 20, helix_angle=45)
-- mountable_herringbone_rack(modul, length, height, width, pressure_angle=20, helix_angle=45, fastners, profile, head) 
+- mountable_herringbone_rack(modul, length, height, width, pressure_angle=20, helix_angle=45, fastners, profile, head)
 - spur_gear(modul, tooth_number, width, bore, pressure_angle=20, helix_angle=0, optimized=true)
 - herringbone_gear(modul, tooth_number, width, bore, pressure_angle=20, helix_angle=0, optimized=true)
 - rack_and_pinion (modul, rack_length, gear_teeth, rack_height, gear_bore, width, pressure_angle=20, helix_angle=0, together_built=true, optimized=true)
@@ -53,7 +53,7 @@ function radian(pressure_angle) = pressure_angle/rad;
 /*  Converts 2D Polar Coordinates to Cartesian
     Format: radius, phi; phi = Angle to x-Axis on xy-Plane */
 function polar_to_cartesian(polvect) = [
-    polvect[0]*cos(polvect[1]),  
+    polvect[0]*cos(polvect[1]),
     polvect[0]*sin(polvect[1])
 ];
 
@@ -75,7 +75,7 @@ function sphere_ev(theta0,theta) = 1/sin(theta0)*acos(cos(theta)/cos(theta0))-ac
 /*  Converts Spherical Coordinates to Cartesian
     Format: radius, theta, phi; theta = Angle to z-Axis, phi = Angle to x-Axis on xy-Plane */
 function sphere_to_cartesian(vect) = [
-    vect[0]*sin(vect[1])*cos(vect[2]),  
+    vect[0]*sin(vect[1])*cos(vect[2]),
     vect[0]*sin(vect[1])*sin(vect[2]),
     vect[0]*cos(vect[1])
 ];
@@ -89,12 +89,12 @@ function is_even(number) =
 /*  greatest common Divisor
     according to Euclidean Algorithm.
     Sorting: a must be greater than b */
-function ggt(a,b) = 
+function ggt(a,b) =
     a%b == 0 ? b : ggt(b,a%b);
 
 /*  Polar function with polar angle and two variables */
 function spiral(a, r0, phi) =
-    a*phi + r0; 
+    a*phi + r0;
 
 /*  Copy and rotate a Body */
 module copier(vect, number, distance, winkel){
@@ -122,7 +122,7 @@ module rack(modul, length, height, width, pressure_angle = 20, helix_angle = 0) 
     b = pi*mx/2-2*mx*tan(pressure_angle);                      // Tip Width
     x = width*tan(helix_angle);                          // Topside Shift by Helix Angle in the X-Direction
     nz = ceil((length+abs(2*x))/(pi*mx));                       // Number of Teeth
-    
+
     translate([-pi*mx*(nz-1)/2-a-b/2,-modul,0]){
         intersection(){                                         // Creates a Prism that fits into a Geometric Box
             copier([1,0,0], nz, pi*mx, 0){
@@ -143,9 +143,9 @@ module rack(modul, length, height, width, pressure_angle = 20, helix_angle = 0) 
             };
             translate([abs(x),-height+modul-0.5,-0.5]){
                 cube([length,height+modul+1,width+1]);          // Cuboid which includes the Volume of the Rack
-            }   
+            }
         };
-    };  
+    };
 }
 
 /* Mountable-rack; uses module "rack"
@@ -154,10 +154,10 @@ module rack(modul, length, height, width, pressure_angle = 20, helix_angle = 0) 
     height = Height of the Rack to the Pitch Line
     width = Width of a Tooth
     pressure_angle = Pressure Angle, Standard = 20° according to DIN 867. Should not exceed 45°.
-    helix_angle = Helix Angle of the Rack Transverse Axis; 0° = Spur Teeth 
+    helix_angle = Helix Angle of the Rack Transverse Axis; 0° = Spur Teeth
     fastners = Total number of fastners.
     profile = Metric standard profile for fastners (ISO machine screws), M4 = 4, M6 = 6 etc.
-    
+
     head = Style of fastner to accomodate.
     PH = Pan Head, C = Countersunk, RC = Raised Countersunk, CS = Cap Screw, CSS = Countersunk Socket Screw. */
 module mountable_rack(modul, length, height, width, pressure_angle, helix_angle, fastners, profile, head) {
@@ -215,7 +215,7 @@ module mountable_rack(modul, length, height, width, pressure_angle, helix_angle,
                     rotate([90,0,0])
                     cylinder (h=profile*0.6, d1=profile*2, d2=profile, center=false);
                     }
-                } 
+                }
             }
         }
 
@@ -229,7 +229,7 @@ module mountable_rack(modul, length, height, width, pressure_angle, helix_angle,
     optimized = Create holes for Material-/Weight-Saving or Surface Enhancements where Geometry allows */
 module spur_gear(modul, tooth_number, width, bore, pressure_angle = 20, helix_angle = 0, optimized = true) {
 
-    // Dimension Calculations  
+    // Dimension Calculations
     d = modul * tooth_number;                                           // Pitch Circle Diameter
     r = d / 2;                                                      // Pitch Circle Radius
     alpha_spur = atan(tan(pressure_angle)/cos(helix_angle));// Helix Angle in Transverse Section
@@ -248,11 +248,11 @@ module spur_gear(modul, tooth_number, width, bore, pressure_angle = 20, helix_an
     gamma = rad*width/(r*tan(90-helix_angle));               // Torsion Angle for Extrusion
     step = rho_ra/16;                                            // Involute is divided into 16 pieces
     tau = 360/tooth_number;                                             // Pitch Angle
-    
+
     r_hole = (2*rf - bore)/8;                                    // Radius of Holes for Material-/Weight-Saving
     rm = bore/2+2*r_hole;                                        // Distance of the Axes of the Holes from the Main Axis
     z_hole = floor(2*pi*rm/(3*r_hole));                             // Number of Holes for Material-/Weight-Saving
-    
+
     optimized = (optimized && r >= width*1.5 && d > 2*bore);    // is Optimization useful?
 
     // Drawing
@@ -264,7 +264,7 @@ module spur_gear(modul, tooth_number, width, bore, pressure_angle = 20, helix_an
                 difference(){
                     union(){
                         tooth_width = (180*(1-clearance))/tooth_number+2*phi_r;
-                        circle(rf);                                     // Root Circle 
+                        circle(rf);                                     // Root Circle
                         for (rot = [0:tau:360]){
                             rotate (rot){                               // Copy and Rotate "Number of Teeth"
                                 polygon(concat(                         // Tooth
@@ -285,7 +285,7 @@ module spur_gear(modul, tooth_number, width, bore, pressure_angle = 20, helix_an
                                 );
                             }
                         }
-                    }           
+                    }
                     circle(r = rm+r_hole*1.49);                         // "bore"
                 }
             }
@@ -348,10 +348,10 @@ module herringbone_rack(modul, length, height, width, pressure_angle = 20, helix
     height = Height of the Rack to the Pitch Line
     width = Width of a Tooth
     pressure_angle = Pressure Angle, Standard = 20° according to DIN 867. Should not exceed 45°.
-    helix_angle = Helix Angle of the Rack Transverse Axis; 0° = Spur Teeth 
+    helix_angle = Helix Angle of the Rack Transverse Axis; 0° = Spur Teeth
     fastners = Total number of fastners.
     profile = Metric standard profile for fastners (ISO machine screws), M4 = 4, M6 = 6 etc.
-    
+
     head = Style of fastner to accomodate.
     PH = Pan Head, C = Countersunk, RC = Raised Countersunk, CS = Cap Screw, CSS = Countersunk Socket Screw. */
 module mountable_herringbone_rack(modul, length, height, width, pressure_angle, helix_angle, fastners, profile, head) {
@@ -409,7 +409,7 @@ module mountable_herringbone_rack(modul, length, height, width, pressure_angle, 
                     rotate([90,0,0])
                     cylinder (h=profile*0.6, d1=profile*2, d2=profile, center=false);
                     }
-                } 
+                }
             }
         }
 
@@ -434,7 +434,7 @@ module herringbone_gear(modul, tooth_number, width, bore, pressure_angle = 20, h
     r_hole = (2*rf - bore)/8;                                    // Radius of Holes for Material-/Weight-Saving
     rm = bore/2+2*r_hole;                                        // Distance of the Axes of the Holes from the Main Axis
     z_hole = floor(2*pi*rm/(3*r_hole));                             // Number of Holes for Material-/Weight-Saving
-    
+
     optimized = (optimized && r >= width*3 && d > 2*bore);      // is Optimization useful?
 
     translate([0,0,width]){
@@ -506,7 +506,7 @@ module rack_and_pinion (modul, rack_length, gear_teeth, rack_height, gear_bore, 
     helix_angle = Helix Angle to the Axis of Rotation, Standard = 0° (Spur Teeth) */
 module ring_gear(modul, tooth_number, width, rim_width, pressure_angle = 20, helix_angle = 0) {
 
-    // Dimension Calculations  
+    // Dimension Calculations
     ha = (tooth_number >= 20) ? 0.02 * atan((tooth_number/15)/pi) : 0.6;    // Shortening Factor of Tooth Head Height
     d = modul * tooth_number;                                           // Pitch Circle Diameter
     r = d / 2;                                                      // Pitch Circle Radius
@@ -535,7 +535,7 @@ module ring_gear(modul, tooth_number, width, rim_width, pressure_angle = 20, hel
             circle(r = ra + rim_width);                            // Outer Circle
             union(){
                 tooth_width = (180*(1+clearance))/tooth_number+2*phi_r;
-                circle(rf);                                         // Root Circle 
+                circle(rf);                                         // Root Circle
                 for (rot = [0:tau:360]){
                     rotate (rot) {                                  // Copy and Rotate "Number of Teeth"
                         polygon( concat(
@@ -558,7 +558,7 @@ module ring_gear(modul, tooth_number, width, rim_width, pressure_angle = 20, hel
     }
 
     echo("Ring Gear Outer Diamater = ", 2*(ra + rim_width));
-    
+
 }
 
 /*  Herringbone Ring Gear; uses the Module "ring_gear"
@@ -589,7 +589,7 @@ module herringbone_ring_gear(modul, tooth_number, width, rim_width, pressure_ang
     bore = Diameter of the Center Hole
     pressure_angle = Pressure Angle, Standard = 20° according to DIN 867. Should not exceed 45°.
     helix_angle = Helix Angle to the Axis of Rotation, Standard = 0° (Spur Teeth)
-    together_built = 
+    together_built =
     optimized = Create holes for Material-/Weight-Saving or Surface Enhancements where Geometry allows
     together_built = Components assembled for Construction or separated for 3D-Printing */
 module planetary_gear(modul, sun_teeth, planet_teeth, number_planets, width, rim_width, bore, pressure_angle=20, helix_angle=0, together_built=true, optimized=true){
@@ -602,7 +602,7 @@ module planetary_gear(modul, sun_teeth, planet_teeth, number_planets, width, rim
     d_ring = modul*ring_teeth;                                 // Ring Pitch Circle Diameter
 
     rotate = is_even(planet_teeth);                                // Does the Sun Gear need to be rotated?
-        
+
     n_max = floor(180/asin(modul*(planet_teeth)/(modul*(sun_teeth +  planet_teeth))));
                                                                         // Number of Planet Gears: at most as many as possible without overlap
 
@@ -658,10 +658,10 @@ module bevel_gear(modul, tooth_number, partial_cone_angle, tooth_width, bore, pr
                                                                     // corresponds to the Chord in a Spherical Section
     r_outside = d_outside / 2;                                        // Part Cone Radius at the Cone Base
     rg_outside = r_outside/sin(partial_cone_angle);                      // Large-Cone Radius for Outside-Tooth, corresponds to the Length of the Cone-Flank;
-    rg_inside = rg_outside - tooth_width;                              // Large-Cone Radius for Inside-Tooth  
+    rg_inside = rg_outside - tooth_width;                              // Large-Cone Radius for Inside-Tooth
     r_inside = r_outside*rg_inside/rg_outside;
     alpha_spur = atan(tan(pressure_angle)/cos(helix_angle));// Helix Angle in Transverse Section
-    delta_b = asin(cos(alpha_spur)*sin(partial_cone_angle));          // Base Cone Angle     
+    delta_b = asin(cos(alpha_spur)*sin(partial_cone_angle));          // Base Cone Angle
     da_outside = (modul <1)? d_outside + (modul * 2.2) * cos(partial_cone_angle): d_outside + modul * 2 * cos(partial_cone_angle);
     ra_outside = da_outside / 2;
     delta_a = asin(ra_outside/rg_outside);
@@ -671,24 +671,24 @@ module bevel_gear(modul, tooth_number, partial_cone_angle, tooth_width, bore, pr
     delta_f = asin(rf_outside/rg_outside);
     rkf = rg_outside*sin(delta_f);                                   // Radius of the Cone Foot
     height_f = rg_outside*cos(delta_f);                               // Height of the Cone from the Root Cone
-    
+
     echo("Part Cone Diameter at the Cone Base = ", d_outside);
-    
+
     // Sizes for Complementary Truncated Cone
     height_k = (rg_outside-tooth_width)/cos(partial_cone_angle);          // Height of the Complementary Cone for corrected Tooth Length
     rk = (rg_outside-tooth_width)/sin(partial_cone_angle);               // Foot Radius of the Complementary Cone
-    rfk = rk*height_k*tan(delta_f)/(rk+height_k*tan(delta_f));        // Tip Radius of the Cylinders for 
+    rfk = rk*height_k*tan(delta_f)/(rk+height_k*tan(delta_f));        // Tip Radius of the Cylinders for
                                                                     // Complementary Truncated Cone
     height_fk = rk*height_k/(height_k*tan(delta_f)+rk);                // height of the Complementary Truncated Cones
 
     echo("Bevel Gear Height = ", height_f-height_fk);
-    
+
     phi_r = sphere_ev(delta_b, partial_cone_angle);                      // Angle to Point of Involute on Partial Cone
-        
+
     // Torsion Angle gamma from Helix Angle
     gamma_g = 2*atan(tooth_width*tan(helix_angle)/(2*rg_outside-tooth_width));
     gamma = 2*asin(rg_outside/r_outside*sin(gamma_g/2));
-    
+
     step = (delta_a - delta_b)/16;
     tau = 360/tooth_number;                                             // Pitch Angle
     start = (delta_b > delta_f) ? delta_b : delta_f;
@@ -699,13 +699,13 @@ module bevel_gear(modul, tooth_number, partial_cone_angle, tooth_width, bore, pr
                                                                     // Makes Alignment with other Gears easier
         translate([0,0,height_f]) rotate(a=[0,180,0]){
             union(){
-                translate([0,0,height_f]) rotate(a=[0,180,0]){                               // Truncated Cone                          
+                translate([0,0,height_f]) rotate(a=[0,180,0]){                               // Truncated Cone
                     difference(){
                         linear_extrude(height=height_f-height_fk, scale=rfk/rkf) circle(rkf*1.001); // 1 permille Overlap with Tooth Root
                         translate([0,0,-1]){
                             cylinder(h = height_f-height_fk+2, r = bore/2);                // bore
                         }
-                    }   
+                    }
                 }
                 for (rot = [0:tau:360]){
                     rotate (rot) {                                                          // Copy and Rotate "Number of Teeth"
@@ -719,11 +719,11 @@ module bevel_gear(modul, tooth_number, partial_cone_angle, tooth_width, bore, pr
                                         sphere_to_cartesian([rg_outside, start*1.001, flankpoint_under]),    // 1 permille Overlap with Tooth
                                         sphere_to_cartesian([rg_inside, start*1.001, flankpoint_under+gamma]),
                                         sphere_to_cartesian([rg_inside, start*1.001, mirrpoint-flankpoint_under+gamma]),
-                                        sphere_to_cartesian([rg_outside, start*1.001, mirrpoint-flankpoint_under]),                               
+                                        sphere_to_cartesian([rg_outside, start*1.001, mirrpoint-flankpoint_under]),
                                         sphere_to_cartesian([rg_outside, delta_f, flankpoint_under]),
                                         sphere_to_cartesian([rg_inside, delta_f, flankpoint_under+gamma]),
                                         sphere_to_cartesian([rg_inside, delta_f, mirrpoint-flankpoint_under+gamma]),
-                                        sphere_to_cartesian([rg_outside, delta_f, mirrpoint-flankpoint_under])                                
+                                        sphere_to_cartesian([rg_outside, delta_f, mirrpoint-flankpoint_under])
                                     ],
                                     faces = [[0,1,2],[0,2,3],[0,4,1],[1,4,5],[1,5,2],[2,5,6],[2,6,3],[3,6,7],[0,3,7],[0,7,4],[4,6,5],[4,7,6]],
                                     convexity =1
@@ -738,11 +738,11 @@ module bevel_gear(modul, tooth_number, partial_cone_angle, tooth_width, bore, pr
                                         sphere_to_cartesian([rg_outside, delta, flankpoint_under]),
                                         sphere_to_cartesian([rg_inside, delta, flankpoint_under+gamma]),
                                         sphere_to_cartesian([rg_inside, delta, mirrpoint-flankpoint_under+gamma]),
-                                        sphere_to_cartesian([rg_outside, delta, mirrpoint-flankpoint_under]),                             
+                                        sphere_to_cartesian([rg_outside, delta, mirrpoint-flankpoint_under]),
                                         sphere_to_cartesian([rg_outside, delta+step, flankpoint_over]),
                                         sphere_to_cartesian([rg_inside, delta+step, flankpoint_over+gamma]),
                                         sphere_to_cartesian([rg_inside, delta+step, mirrpoint-flankpoint_over+gamma]),
-                                        sphere_to_cartesian([rg_outside, delta+step, mirrpoint-flankpoint_over])                                   
+                                        sphere_to_cartesian([rg_outside, delta+step, mirrpoint-flankpoint_over])
                                     ],
                                     faces = [[0,1,2],[0,2,3],[0,4,1],[1,4,5],[1,5,2],[2,5,6],[2,6,3],[3,6,7],[0,3,7],[0,7,4],[4,6,5],[4,7,6]],
                                     convexity =1
@@ -750,7 +750,7 @@ module bevel_gear(modul, tooth_number, partial_cone_angle, tooth_width, bore, pr
                             }
                         }
                     }
-                }   
+                }
             }
         }
     }
@@ -766,9 +766,9 @@ module bevel_gear(modul, tooth_number, partial_cone_angle, tooth_width, bore, pr
 module bevel_herringbone_gear(modul, tooth_number, partial_cone_angle, tooth_width, bore, pressure_angle = 20, helix_angle=0){
 
     // Dimension Calculations
-    
+
     tooth_width = tooth_width / 2;
-    
+
     d_outside = modul * tooth_number;                                // Part Cone Diameter at the Cone Base,
                                                                 // corresponds to the Chord in a Spherical Section
     r_outside = d_outside / 2;                                    // Part Cone Radius at the Cone Base
@@ -782,16 +782,16 @@ module bevel_herringbone_gear(modul, tooth_number, partial_cone_angle, tooth_wid
     // Torsion Angle gamma from Helix Angle
     gamma_g = 2*atan(tooth_width*tan(helix_angle)/(2*rg_outside-tooth_width));
     gamma = 2*asin(rg_outside/r_outside*sin(gamma_g/2));
-    
+
     echo("Part Cone Diameter at the Cone Base = ", d_outside);
-    
+
     // Sizes for Complementary Truncated Cone
     height_k = (rg_outside-tooth_width)/cos(partial_cone_angle);      // Height of the Complementary Cone for corrected Tooth Length
     rk = (rg_outside-tooth_width)/sin(partial_cone_angle);           // Foot Radius of the Complementary Cone
-    rfk = rk*height_k*tan(delta_f)/(rk+height_k*tan(delta_f));    // Tip Radius of the Cylinders for 
+    rfk = rk*height_k*tan(delta_f)/(rk+height_k*tan(delta_f));    // Tip Radius of the Cylinders for
                                                                 // Complementary Truncated Cone
     height_fk = rk*height_k/(height_k*tan(delta_f)+rk);            // height of the Complementary Truncated Cones
-    
+
     modul_inside = modul*(1-tooth_width/rg_outside);
 
         union(){
@@ -814,8 +814,8 @@ module spiral_bevel_gear(modul, tooth_number, partial_cone_angle, tooth_width, b
     steps = 16;
 
     // Dimension Calculations
-    
-    b = tooth_width / steps;  
+
+    b = tooth_width / steps;
     d_outside = modul * tooth_number;                                // Part Cone Diameter at the Cone Base,
                                                                 // corresponds to the Chord in a Spherical Section
     r_outside = d_outside / 2;                                    // Part Cone Radius at the Cone Base
@@ -825,14 +825,14 @@ module spiral_bevel_gear(modul, tooth_number, partial_cone_angle, tooth_width, b
     echo("Part Cone Diameter at the Cone Base = ", d_outside);
 
     a=tan(helix_angle)/rg_center;
-    
+
     union(){
     for(i=[0:1:steps-1]){
         r = rg_outside-i*b;
         helix_angle = a*r;
         modul_r = modul-b*i/rg_outside;
         translate([0,0,b*cos(partial_cone_angle)*i])
-            
+
             rotate(a=-helix_angle*i,v=[0,0,1])
                 bevel_gear(modul_r, tooth_number, partial_cone_angle, b, bore, pressure_angle, helix_angle);   // top Half
         }
@@ -851,23 +851,23 @@ module spiral_bevel_gear(modul, tooth_number, partial_cone_angle, tooth_width, b
     helix_angle = Helix Angle, Standard = 0°
     together_built = Components assembled for Construction or separated for 3D-Printing */
 module bevel_gear_pair(modul, gear_teeth, pinion_teeth, axis_angle=90, tooth_width, gear_bore, pinion_bore, pressure_angle=20, helix_angle=0, together_built=true){
- 
+
     // Dimension Calculations
     r_gear = modul*gear_teeth/2;                           // Cone Radius of the Gear
     delta_gear = atan(sin(axis_angle)/(pinion_teeth/gear_teeth+cos(axis_angle)));   // Cone Angle of the Gear
     delta_pinion = atan(sin(axis_angle)/(gear_teeth/pinion_teeth+cos(axis_angle)));// Cone Angle of the Pinion
     rg = r_gear/sin(delta_gear);                              // Radius of the Large Sphere
     c = modul / 6;                                          // Tip Clearance
-    df_pinion = pi*rg*delta_pinion/90 - 2 * (modul + c);    // Bevel Diameter on the Large Sphere 
+    df_pinion = pi*rg*delta_pinion/90 - 2 * (modul + c);    // Bevel Diameter on the Large Sphere
     rf_pinion = df_pinion / 2;                              // Root Cone Radius on the Large Sphere
     delta_f_pinion = rf_pinion/(pi*rg) * 180;               // Tip Cone Angle
     rkf_pinion = rg*sin(delta_f_pinion);                    // Radius of the Cone Foot
     height_f_pinion = rg*cos(delta_f_pinion);                // Height of the Cone from the Root Cone
-    
+
     echo("Cone Angle Gear = ", delta_gear);
     echo("Cone Angle Pinion = ", delta_pinion);
- 
-    df_gear = pi*rg*delta_gear/90 - 2 * (modul + c);          // Bevel Diameter on the Large Sphere 
+
+    df_gear = pi*rg*delta_gear/90 - 2 * (modul + c);          // Bevel Diameter on the Large Sphere
     rf_gear = df_gear / 2;                                    // Root Cone Radius on the Large Sphere
     delta_f_gear = rf_gear/(pi*rg) * 180;                     // Tip Cone Angle
     rkf_gear = rg*sin(delta_f_gear);                          // Radius of the Cone Foot
@@ -875,14 +875,14 @@ module bevel_gear_pair(modul, gear_teeth, pinion_teeth, axis_angle=90, tooth_wid
 
     echo("Gear Height = ", height_f_gear);
     echo("Pinion Height = ", height_f_pinion);
-    
+
     rotate = is_even(pinion_teeth);
-    
+
     // Drawing
     // Rad
     rotate([0,0,180*(1-clearance)/gear_teeth*rotate])
         bevel_gear(modul, gear_teeth, delta_gear, tooth_width, gear_bore, pressure_angle, helix_angle);
-    
+
     // Ritzel
     if (together_built)
         translate([-height_f_pinion*cos(90-axis_angle),0,height_f_gear-height_f_pinion*sin(90-axis_angle)])
@@ -905,22 +905,22 @@ module bevel_gear_pair(modul, gear_teeth, pinion_teeth, axis_angle=90, tooth_wid
     helix_angle = Helix Angle, Standard = 0°
     together_built = Components assembled for Construction or separated for 3D-Printing */
 module bevel_herringbone_gear_pair(modul, gear_teeth, pinion_teeth, axis_angle=90, tooth_width, gear_bore, pinion_bore, pressure_angle = 20, helix_angle=10, together_built=true){
- 
+
     r_gear = modul*gear_teeth/2;                           // Cone Radius of the Gear
     delta_gear = atan(sin(axis_angle)/(pinion_teeth/gear_teeth+cos(axis_angle)));   // Cone Angle of the Gear
     delta_pinion = atan(sin(axis_angle)/(gear_teeth/pinion_teeth+cos(axis_angle)));// Cone Angle of the Pinion
     rg = r_gear/sin(delta_gear);                              // Radius of the Large Sphere
     c = modul / 6;                                          // Tip Clearance
-    df_pinion = pi*rg*delta_pinion/90 - 2 * (modul + c);    // Bevel Diameter on the Large Sphere 
+    df_pinion = pi*rg*delta_pinion/90 - 2 * (modul + c);    // Bevel Diameter on the Large Sphere
     rf_pinion = df_pinion / 2;                              // Root Cone Radius on the Large Sphere
     delta_f_pinion = rf_pinion/(pi*rg) * 180;               // Tip Cone Angle
     rkf_pinion = rg*sin(delta_f_pinion);                    // Radius of the Cone Foot
     height_f_pinion = rg*cos(delta_f_pinion);                // Height of the Cone from the Root Cone
-    
+
     echo("Cone Angle Gear = ", delta_gear);
     echo("Cone Angle Pinion = ", delta_pinion);
- 
-    df_gear = pi*rg*delta_gear/90 - 2 * (modul + c);          // Bevel Diameter on the Large Sphere 
+
+    df_gear = pi*rg*delta_gear/90 - 2 * (modul + c);          // Bevel Diameter on the Large Sphere
     rf_gear = df_gear / 2;                                    // Root Cone Radius on the Large Sphere
     delta_f_gear = rf_gear/(pi*rg) * 180;                     // Tip Cone Angle
     rkf_gear = rg*sin(delta_f_gear);                          // Radius of the Cone Foot
@@ -928,13 +928,13 @@ module bevel_herringbone_gear_pair(modul, gear_teeth, pinion_teeth, axis_angle=9
 
     echo("Gear Height = ", height_f_gear);
     echo("Pinion Height = ", height_f_pinion);
-    
+
     rotate = is_even(pinion_teeth);
-    
+
     // Gear
     rotate([0,0,180*(1-clearance)/gear_teeth*rotate])
         bevel_herringbone_gear(modul, gear_teeth, delta_gear, tooth_width, gear_bore, pressure_angle, helix_angle);
-    
+
     // Pinion
     if (together_built)
         translate([-height_f_pinion*cos(90-axis_angle),0,height_f_gear-height_f_pinion*sin(90-axis_angle)])
@@ -964,9 +964,9 @@ module worm(modul, thread_starts, length, bore, pressure_angle=20, lead_angle, t
     a = modul*thread_starts/(90*tan(pressure_angle));               // Spiralparameter
     tau_max = 180/thread_starts*tan(pressure_angle);                // Angle from Foot to Tip in the Normal Plane
     gamma = -rad*length/((rf+modul+c)*tan(lead_angle));    // Torsion Angle for Extrusion
-    
+
     step = tau_max/16;
-    
+
     // Drawing: Extrude with a Twist a Surface enclosed by two Archimedean Spirals
     if (together_built) {
         rotate([0,0,tau_max]){
@@ -975,17 +975,17 @@ module worm(modul, thread_starts, length, bore, pressure_angle=20, lead_angle, t
                     union(){
                         for(i=[0:1:thread_starts-1]){
                             polygon(
-                                concat(                         
+                                concat(
                                     [[0,0]],
-                                    
+
                                     // rising Tooth Flank
                                     [for (tau = [0:step:tau_max])
                                         polar_to_cartesian([spiral(a, rf, tau), tau+i*(360/thread_starts)])],
-                                        
+
                                     // Tooth Tip
                                     [for (tau = [tau_max:step:180/thread_starts])
                                         polar_to_cartesian([spiral(a, rf, tau_max), tau+i*(360/thread_starts)])],
-                                    
+
                                     // descending Tooth Flank
                                     [for (tau = [180/thread_starts:step:(180/thread_starts+tau_max)])
                                         polar_to_cartesian([spiral(a, rf, 180/thread_starts+tau_max-tau), tau+i*(360/thread_starts)])]
@@ -1032,7 +1032,7 @@ lead_angle = Pitch angle of the worm corresponds to 90 ° bevel angle. Positive 
 optimized = Holes for material / weight savings
 together_built =  Components assembled for construction or apart for 3D printing */
 module worm_gear(modul, tooth_number, thread_starts, width, length, worm_bore, gear_bore, pressure_angle=20, lead_angle, optimized=true, together_built=true, show_spur=1, show_worm=1){
-    
+
     c = modul / 6;                                              // Tip Clearance
     r_worm = modul*thread_starts/(2*sin(lead_angle));       // Worm Part-Cylinder Radius
     r_gear = modul*tooth_number/2;                                   // Spur Gear Part-Cone Radius
@@ -1052,7 +1052,7 @@ module worm_gear(modul, tooth_number, thread_starts, width, length, worm_bore, g
             rotate([0,0,gamma])
                 spur_gear (modul, tooth_number, width, gear_bore, pressure_angle, -lead_angle, optimized);
     }
-    else {  
+    else {
         if(show_worm)
         worm(modul, thread_starts, length, worm_bore, pressure_angle, lead_angle, together_built);
 
