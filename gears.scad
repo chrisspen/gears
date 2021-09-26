@@ -260,7 +260,7 @@ module spur_gear(modul, tooth_number, width, bore, pressure_angle = 20, helix_an
         rotate([0,0,-phi_r-90*(1-clearance)/tooth_number]){                     // Center Tooth on X-Axis;
                                                                         // Makes Alignment with other Gears easier
 
-            linear_extrude(height = width, twist = gamma){
+            linear_extrude(height = width, convexity = 10, twist = gamma){
                 difference(){
                     union(){
                         tooth_width = (180*(1-clearance))/tooth_number+2*phi_r;
@@ -292,13 +292,13 @@ module spur_gear(modul, tooth_number, width, bore, pressure_angle = 20, helix_an
         }
         // with Material Savings
         if (optimized) {
-            linear_extrude(height = width){
+            linear_extrude(height = width, convexity = 10){
                 difference(){
                         circle(r = (bore+r_hole)/2);
                         circle(r = bore/2);                          // bore
                     }
                 }
-            linear_extrude(height = (width-r_hole/2 < width*2/3) ? width*2/3 : width-r_hole/2){
+            linear_extrude(height = (width-r_hole/2 < width*2/3) ? width*2/3 : width-r_hole/2, convexity = 10){
                 difference(){
                     circle(r=rm+r_hole*1.51);
                     union(){
@@ -313,7 +313,7 @@ module spur_gear(modul, tooth_number, width, bore, pressure_angle = 20, helix_an
         }
         // without Material Savings
         else {
-            linear_extrude(height = width){
+            linear_extrude(height = width, convexity = 10){
                 difference(){
                     circle(r = rm+r_hole*1.51);
                     circle(r = bore/2);
