@@ -16,7 +16,7 @@ This script adjusts the pressure angle in the transverse section to the helix an
 
 `zahnstange(modul, laenge, hoehe, breite, eingriffswinkel=20, schraegungswinkel=0)`
 
-### Parameters
+#### Parameters
 * modul = height of the tooth above the pitch line
 * laenge = length of the rack
 * hoehe = height from bottom to the pitch line
@@ -39,7 +39,7 @@ This script adjusts the pressure angle in the transverse section to the helix an
 ### Format
 `stirnrad (modul, zahnzahl, breite, bohrung, eingriffswinkel=20, schraegungswinkel=0, optimiert=true)`
 
-### Parameters
+#### Parameters
 * modul = gear module = height of the tooth above the pitch circle = 25.4 / diametrical pitch = circular pitch / π
 * zahnzahl = number of teeth
 * breite = face width
@@ -63,7 +63,7 @@ This script adjusts the pressure angle in the transverse section to the helix an
 ### Format
 `pfeilrad (modul, zahnzahl, breite, bohrung, eingriffswinkel=20, schraegungswinkel=0, optimiert=true)`
 
-### Parameters
+#### Parameters
 * modul = gear module = height of the tooth above the pitch circle = 25.4 / diametrical pitch = circular pitch / π
 * zahnzahl = number of teeth
 * breite = face width
@@ -87,7 +87,7 @@ This script adjusts the pressure angle in the transverse section to the helix an
 ### Format
 `zahnstange(modul, laenge, hoehe, breite, eingriffswinkel=20, schraegungswinkel=0)`
 
-### Parameters
+#### Parameters
 modul = gear module = height of the tooth above the pitch line/pitch circle = 25.4 / diametrical pitch = circular pitch / π
 laenge_stange = length of the rack
 zahnzahl_ritzel = number of teeth on the pinion
@@ -110,7 +110,7 @@ This script adjusts the pressure angle in the transverse section to the helix an
 ### Format
 `hohlrad(modul, zahnzahl, breite, randbreite, eingriffswinkel=20, schraegungswinkel=0)`
 
-### Parameters
+#### Parameters
 * modul = gear module = height of the tooth above the pitch circle = 25.4 / diametrical pitch = circular pitch / π
 zahnzahl = number of teeth
 * breite = face width
@@ -129,7 +129,7 @@ A helix angle, if used, should be set between between 30° and 45°. Recommendat
 ### Format
 `pfeilhohlrad(modul, zahnzahl, breite, randbreite, eingriffswinkel=20, schraegungswinkel=0)`
 
-### Parameters
+#### Parameters
 * modul = gear module = height of the tooth above the pitch circle = 25.4 / diametrical pitch = circular pitch / π
 * zahnzahl = number of teeth
 * breite = face width
@@ -159,7 +159,7 @@ The gears can also be kept from sticking by a sufficiently large clearance ("Spi
 ### Format
 `planetengetriebe(modul, zahnzahl_sonne, zahnzahl_planet, breite, randbreite, bohrung, eingriffswinkel=20, schraegungswinkel=0, zusammen_gebaut=true, optimiert=true)`
 
-### Parameters
+#### Parameters
 * spiel = clearance between teeth as a fraction of their width (0 = no clearance)
 * modul = gear module = height of the tooth above the pitch circle = 25.4 / diametrical pitch = circular pitch / π
 * zahnzahl_sonne = number of teeth on the sun gear
@@ -183,7 +183,7 @@ This script adjusts the pressure angle in the transverse section to the helix an
 ### Format
 `pfeilkegelrad(modul, zahnzahl, teilkegelwinkel, zahnbreite, bohrung, eingriffswinkel=20, schraegungswinkel=0)`
 
-### Parameters
+#### Parameters
 * modul = gear module = height of the gear teeth above the pitch cone = 25.4 / diametrical pitch = circular pitch / π
 * zahnzahl = number of teeth
 * teilkegelwinkel = reference cone (half-)angle
@@ -200,7 +200,7 @@ This script calculates both the gear and the pinion of a bevel gear pair, using 
 ### Format
 `kegelradpaar(modul, zahnzahl_rad, zahnzahl_ritzel, achsenwinkel=90, zahnbreite, bohrung, eingriffswinkel = 20, schraegungswinkel=0, zusammen_gebaut=true)`
 
-### Parameters
+#### Parameters
 * modul = gear module = height of the gear teeth above the pitch cone = 25.4 / diametrical pitch = circular pitch / π
 * zahnzahl_rad = number of teeth on the gear
 * zahnzahl_ritzel = number of teeth on the pinion
@@ -220,7 +220,7 @@ This script calculates both the gear and the pinion of a herringbone bevel gear 
 ### Format
 `pfeilkegelradpaar(modul, zahnzahl_rad, zahnzsahl_ritzel, achsenwinkel=90, zahnbreite, bohrung, eingriffswinkel = 20, schraegungswinkel=0, zusammen_gebaut=true)`
 
-### Parameters
+#### Parameters
 * modul = gear module = height of the gear teeth above the pitch cone = 25.4 / diametrical pitch = circular pitch / π
 * zahnzahl_rad = number of teeth on the gear
 * zahnzahl_ritzel = number of teeth on the pinion
@@ -244,7 +244,7 @@ r = m·z·<sup>1</sup>/<sub>2sinγ</sub>
 ### Format
 `schnecke(modul, gangzahl, laenge, bohrung, eingriffswinkel=20, steigungswinkel=10, zusammen_gebaut=true)`
 
-### Parameters
+#### Parameters
 * modul = height of the thread above the pitch circle
 * gangzahl = number of threads
 * laenge = length of the worm
