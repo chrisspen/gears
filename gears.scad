@@ -1031,7 +1031,7 @@ pressure_angle = Pressure Angle, Standard = 20° according to DIN 867. Should no
 lead_angle = Pitch angle of the worm corresponds to 90 ° bevel angle. Positive slope angle = clockwise.
 optimized = Holes for material / weight savings
 together_built =  Components assembled for construction or apart for 3D printing */
-module worm_gear(modul, tooth_number, thread_starts, width, length, worm_bore, gear_bore, pressure_angle=20, lead_angle, optimized=true, together_built=true, show_spur=1, show_worm=1){
+module worm_gear(modul, tooth_number, thread_starts, width, length, worm_bore, gear_bore, pressure_angle=20, lead_angle=10, optimized=true, together_built=true, show_spur=1, show_worm=1){
 
     c = modul / 6;                                              // Tip Clearance
     r_worm = modul*thread_starts/(2*sin(lead_angle));       // Worm Part-Cylinder Radius
