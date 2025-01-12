@@ -793,12 +793,32 @@ module bevel_herringbone_gear(modul, tooth_number, partial_cone_angle, tooth_wid
     height_fk = rk*height_k/(height_k*tan(delta_f)+rk);            // height of the Complementary Truncated Cones
 
     modul_inside = modul*(1-tooth_width/rg_outside);
+    
+    lower_cone_angle = partial_cone_angle - 1; // Correct for mirroring misalignment
 
-        union(){
-        bevel_gear(modul, tooth_number, partial_cone_angle, tooth_width, bore, pressure_angle, helix_angle);        // bottom Half
+    union(){
+        // Outer ring
+        if(1)
+        bevel_gear(
+            modul,
+            tooth_number,
+            lower_cone_angle,
+            tooth_width,
+            bore,
+            pressure_angle,
+            helix_angle);
+        // Inner ring
+        if(1)
         translate([0,0,height_f-height_fk])
             rotate(a=-gamma,v=[0,0,1])
-                bevel_gear(modul_inside, tooth_number, partial_cone_angle, tooth_width, bore, pressure_angle, -helix_angle); // top Half
+                bevel_gear(
+                    modul_inside,
+                    tooth_number,
+                    partial_cone_angle,
+                    tooth_width,
+                    bore,
+                    pressure_angle,
+                    -helix_angle);
     }
 }
 
@@ -1090,7 +1110,19 @@ module worm_gear(modul, tooth_number, thread_starts, width, length, worm_bore, g
 
 //bevel_gear_pair(modul=1, gear_teeth=30, pinion_teeth=11, axis_angle=100, tooth_width=5, gear_bore=4, pinion_bore=4, pressure_angle = 20, helix_angle=20, together_built=true);
 
-//bevel_herringbone_gear_pair(modul=1, gear_teeth=30, pinion_teeth=11, axis_angle=100, tooth_width=5, gear_bore=4, pinion_bore=4, pressure_angle = 20, helix_angle=30, together_built=true);
+/*
+bevel_herringbone_gear_pair(
+    modul=1,
+    gear_teeth=114,
+    pinion_teeth=11,
+    axis_angle=90,
+    tooth_width=5,
+    gear_bore=0,
+    pinion_bore=4,
+    pressure_angle=20,
+    helix_angle=20,
+    together_built=true);
+*/
 
 //worm(modul=1, thread_starts=2, length=15, bore=4, pressure_angle=20, lead_angle=10, together_built=true);
 
