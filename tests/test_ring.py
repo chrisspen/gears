@@ -76,9 +76,6 @@ class RingGearClearanceTest(unittest.TestCase):
                     f"stderr: {exc.stderr.decode()}"
                 ) from exc
 
-            artifact_png = tests_dir / "ring.png"
-            shutil.copy(png_path, artifact_png)
-
             image = Image.open(png_path).convert("L")
             return image.copy()
 
