@@ -504,10 +504,10 @@ module rack_and_pinion (modul, rack_length, gear_teeth, rack_height, gear_bore, 
     bore = Diameter of the Center Hole
     pressure_angle = Pressure Angle, Standard = 20° according to DIN 867. Should not exceed 45°.
     helix_angle = Helix Angle to the Axis of Rotation, Standard = 0° (Spur Teeth) */
-module ring_gear(modul, tooth_number, width, rim_width, pressure_angle = 20, helix_angle = 0) {
+module ring_gear(modul, tooth_number, width, rim_width, pressure_angle = 20, helix_angle = 0, shortening_factor=0.6) {
 
     // Dimension Calculations
-    ha = (tooth_number >= 20) ? 0.02 * atan((tooth_number/15)/pi) : 0.6;    // Shortening Factor of Tooth Head Height
+    ha = shortening_factor;    // Shortening Factor of Tooth Head Height
     d = modul * tooth_number;                                           // Pitch Circle Diameter
     r = d / 2;                                                      // Pitch Circle Radius
     alpha_spur = atan(tan(pressure_angle)/cos(helix_angle));// Helix Angle in Transverse Section
