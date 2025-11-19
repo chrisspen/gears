@@ -273,3 +273,9 @@ Creates a set of one worm gear and a pinion. The pinion is a normal spur gear wi
 * `steigungswinkel` = lead angle of worm. Positive lead angle = clockwise thread rotation
 * `optimiert` = if true, create holes for material/weight reduction resp. surface increase, if geometry allows
 * `zusammen_gebaut` =  assembled (true) or disassembled for printing (false)
+
+### Development
+
+Install bleeding edge Openscad via Snap in devmode:
+
+    sudo snap install openscad-nightly --edge --devmode
