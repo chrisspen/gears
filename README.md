@@ -1,5 +1,7 @@
 # OpenSCAD gear generator
 
+<img src="examples/demo.png" alt="Example gear assembly" width="600" />
+
 This is a fork of [this OpenSCAD gear generator](https://www.thingiverse.com/thing:1604369), translated into English.
 
 OpenSCAD Library for Gear Racks, Involute and Worm Gears
