@@ -2,7 +2,7 @@ include <../gears.scad>
 
 bevel_herringbone_gear_pair(
     modul=1,
-    gear_teeth=114,
+    gear_teeth=30,
     pinion_teeth=11,
     axis_angle=90,
     tooth_width=5,
