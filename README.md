@@ -1,5 +1,7 @@
 # OpenSCAD Gear Generator
 
+[![Build Status](https://github.com/chrisspen/gears/actions/workflows/ci.yml/badge.svg)](https://github.com/chrisspen/gears/actions/workflows/ci.yml)
+
 <img src="examples/demo.png" alt="Example gear assembly" width="600" />
 
 This is a fork of [this OpenSCAD gear generator](https://www.thingiverse.com/thing:1604369), translated into English.
