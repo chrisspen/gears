@@ -10,7 +10,7 @@ A library for the parametric creation of gear racks, spur-, ring-, bevel- and wo
 
 ## Parametric Gear Rack
 
-<img src="examples/rack.png" alt="Gear Rack" />
+<img src="examples/rack.png" alt="Gear Rack" width="300" />
 
 Creates a gear rack.
 
@@ -31,7 +31,7 @@ This script adjusts the pressure angle in the transverse section to the helix an
 
 ## Parametric Involute Spur Gear
 
-<img src="examples/spur_gear.png" alt="Spur Gear" />
+<img src="examples/spur_gear.png" alt="Spur Gear" width="300" />
 
 Creates an involute spur gear without profile displacement following DIN 867 / DIN 58400. 
 
@@ -57,7 +57,7 @@ This script adjusts the pressure angle in the transverse section to the helix an
 
 ## Parametric Herringbone Involute Spur Gear
 
-<img src="examples/herringbone_gear.png" alt="Herringbone Spur Gear" />
+<img src="examples/herringbone_gear.png" alt="Herringbone Spur Gear" width="300" />
 
 Creates a herringbone spur gear without profile displacement. Two gears will mesh if their modules are the same and their helix angles opposite. The centre distance of two meshing gears with module m and tooth numbers z<sub>a</sub> and z<sub>b</sub> is
 <sup>m</sub></sup>/<sub>2</sub>·(z<sub>a</sub> + z<sub>b</sub>)
@@ -83,7 +83,7 @@ This script adjusts the pressure angle in the transverse section to the helix an
 
 ## Parametric Gear Rack and Pinion
 
-<img src="examples/rack_and_pinion.png" alt="Gear Rack and Pinion" />
+<img src="examples/rack_and_pinion.png" alt="Gear Rack and Pinion" width="300" />
 
 Creates a gear rack and pinion.
 
@@ -111,7 +111,7 @@ This script adjusts the pressure angle in the transverse section to the helix an
 
 ## Parametric Involute Ring Gear
 
-<img src="examples/ring_gear.png" alt="Ring Gear" />
+<img src="examples/ring_gear.png" alt="Ring Gear" width="300" />
 
 Creates a herringbone ring gear without profile displacement. Helical gears run more smoothly than gears with straight teeth. However, they also create axial loads which the bearings must be designed to contain. Recommendations for the helix angle depending on the module can be found in DIN 3978.
 
@@ -132,7 +132,7 @@ This script adjusts the pressure angle in the transverse section to the helix an
 
 ## Parametric Herringbone Involute Ring Gear
 
-<img src="examples/herringbone_ring_gear.png" alt="Herringbone Ring Gear" />
+<img src="examples/herringbone_ring_gear.png" alt="Herringbone Ring Gear" width="300" />
 
 Creates a herringbone ring gear without profile displacement. A ring and spur gear mesh if they have the same module and opposite helix angels. Herringbone gears run more smoothly than gear with straight teeth. They also do not create axial load like helical gears do.
 
@@ -153,7 +153,7 @@ A helix angle, if used, should be set between between 30° and 45°. Recommendat
 
 ## Parametric Planetary Gear using Involute Tooth Geometry and Herringbone Shape
 
-<img src="examples/planetary_gear.png" alt="Planetary Gear" />
+<img src="examples/planetary_gear.png" alt="Planetary Gear" width="300" />
 
 This script calculates both the ring gear as well as, if required, the number and geometry of the planetary gears from the number of teeth on the sun and planets. For a module of <i>m</i>, <i>z<sub>s</sub></i> teeth for the sun and <i>z<sub>p</sub></i> teeth for the planets, the centre distance will be
 <sup>m</sub></sup>/<sub>2</sub>·(z<sub>s</sub> + z<sub>p</sub>)
@@ -190,7 +190,7 @@ The gears can also be kept from sticking by a sufficiently large clearance ("Spi
 
 ## Parametric Herringbone Bevel Gear with Spherical Involute Geometry
 
-<img src="examples/bevel_herringbone_gear.png" alt="Herringbone Bevel Gear" />
+<img src="examples/bevel_herringbone_gear.png" alt="Herringbone Bevel Gear" width="300" />
 
 This script creates a herringbone bevel gear with spherical involute teeth geometry. Two gears will mesh if their modules are the same and their helix angles opposite. Herringbone gears run more smoothly than gear with straight teeth. They also do not create axial load like helical gears do. Recommendations for the helix angle depending on the module can be found in DIN 3978.
 
@@ -211,7 +211,7 @@ This script adjusts the pressure angle in the transverse section to the helix an
 
 ## Parametric Pair of Bevel Gears
 
-<img src="examples/bevel_gear_pair.png" alt="Bevel Gear Pair" />
+<img src="examples/bevel_gear_pair.png" alt="Bevel Gear Pair" width="300" />
 
 This script calculates both the gear and the pinion of a bevel gear pair, using the gears' module and their numbers of teeth. The preset angle of 90° between the axes of both gears can be varied. It is possible to calculate the pair both assembled for design as well as disassembled for printing.
 
@@ -233,7 +233,7 @@ This script calculates both the gear and the pinion of a bevel gear pair, using 
 
 ## Parametric Pair of Herringbone Bevel Gears
 
-<img src="examples/bevel_herringbone_gear_pair.png" alt="Herringbone Bevel Gear Pair" />
+<img src="examples/bevel_herringbone_gear_pair.png" alt="Herringbone Bevel Gear Pair" width="300" />
 
 This script calculates both the gear and the pinion of a herringbone bevel gear pair, using the gears' module and their numbers of teeth. The preset angle of 90° between the axes of both gears can be varied. It is possible to calculate the pair both assembled for design as well as disassembled for printing.
 
@@ -255,7 +255,7 @@ This script calculates both the gear and the pinion of a herringbone bevel gear 
 
 ## Parametric Worm
 
-<img src="examples/worm.png" alt="Worm" />
+<img src="examples/worm.png" alt="Worm" width="300" />
 
 Creates a cylidrical worm (archimedean spiral) following DIN 3975.
 
@@ -279,7 +279,7 @@ r = m·z·<sup>1</sup>/<sub>2sinγ</sub>
 
 ##  Worm Gear Set  (Worm and Pinion)
 
-<img src="examples/worm_gear.png" alt="Worm Gear Set" />
+<img src="examples/worm_gear.png" alt="Worm Gear Set" width="300" />
 
 Creates a set of one worm gear and a pinion. The pinion is a normal spur gear without globoid geometry.
 
