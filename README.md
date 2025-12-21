@@ -1,4 +1,4 @@
-# OpenSCAD gear generator
+# OpenSCAD Gear Generator
 
 <img src="examples/demo.png" alt="Example gear assembly" width="600" />
 
