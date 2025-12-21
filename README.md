@@ -10,13 +10,15 @@ A library for the parametric creation of gear racks, spur-, ring-, bevel- and wo
 
 ## Parametric Gear Rack
 
+<img src="examples/rack.png" alt="Gear Rack" />
+
 Creates a gear rack.
 
 This script adjusts the pressure angle in the transverse section to the helix angle: e.g. with a 20° helix angle, a pressure angle of 20° becomes a pressure angle of 21.17° in the transverse section.
 
 ### Format
 
-`zahnstange(modul, laenge, hoehe, breite, eingriffswinkel=20, schraegungswinkel=0)`
+`rack(modul, length, height, width, pressure_angle=20, helix_angle=0)`
 
 #### Parameters
 * `modul` = height of the tooth above the pitch line
@@ -29,6 +31,8 @@ This script adjusts the pressure angle in the transverse section to the helix an
 
 ## Parametric Involute Spur Gear
 
+<img src="examples/spur_gear.png" alt="Spur Gear" />
+
 Creates an involute spur gear without profile displacement following DIN 867 / DIN 58400. 
 
 Two gears will mesh if their modules are the same and their helix angles opposite. The centre distance of two meshing gears A and B with module m and tooth numbers z<sub>a</sub> and z<sub>b</sub> is
@@ -39,7 +43,7 @@ Helical gears run more smoothly than gears with straight teeth. However, they al
 This script adjusts the pressure angle in the transverse section to the helix angle: e.g. with a 20° helix angle, a pressure angle of 20° becomes a pressure angle of 21.17° in the transverse section.
 
 ### Format
-`stirnrad (modul, zahnzahl, breite, bohrung, eingriffswinkel=20, schraegungswinkel=0, optimiert=true)`
+`spur_gear(modul, tooth_number, width, bore, pressure_angle=20, helix_angle=0, optimized=true)`
 
 #### Parameters
 * `modul` = gear module = height of the tooth above the pitch circle = 25.4 / diametrical pitch = circular pitch / π
@@ -53,6 +57,8 @@ This script adjusts the pressure angle in the transverse section to the helix an
 
 ## Parametric Herringbone Involute Spur Gear
 
+<img src="examples/herringbone_gear.png" alt="Herringbone Spur Gear" />
+
 Creates a herringbone spur gear without profile displacement. Two gears will mesh if their modules are the same and their helix angles opposite. The centre distance of two meshing gears with module m and tooth numbers z<sub>a</sub> and z<sub>b</sub> is
 <sup>m</sub></sup>/<sub>2</sub>·(z<sub>a</sub> + z<sub>b</sub>)
 
@@ -63,7 +69,7 @@ A helix angle, if used, should be set between between 30° and 45°. Recommendat
 This script adjusts the pressure angle in the transverse section to the helix angle: e.g. with a 30° helix angle, a pressure angle of 20° becomes a pressure angle of 22.80 in the transverse section.
 
 ### Format
-`pfeilrad (modul, zahnzahl, breite, bohrung, eingriffswinkel=20, schraegungswinkel=0, optimiert=true)`
+`herringbone_gear(modul, tooth_number, width, bore, pressure_angle=20, helix_angle=0, optimized=true)`
 
 #### Parameters
 * `modul` = gear module = height of the tooth above the pitch circle = 25.4 / diametrical pitch = circular pitch / π
@@ -77,6 +83,8 @@ This script adjusts the pressure angle in the transverse section to the helix an
 
 ## Parametric Gear Rack and Pinion
 
+<img src="examples/rack_and_pinion.png" alt="Gear Rack and Pinion" />
+
 Creates a gear rack and pinion.
 
 Helical gears / bevelled racks run more smoothly than gears with straight teeth. However, they also create axial loads which the bearings must be designed to contain. Recommendations for the helix angle depending on the module can be found in DIN 3978.
@@ -87,7 +95,7 @@ With a given module m and z<sub>p</sub> teeth on the pinion, the distance betwee
 This script adjusts the pressure angle in the transverse section to the helix angle: e.g. with a 20° helix angle, a pressure angle of 20° becomes a pressure angle of 21.17° in the transverse section.
 
 ### Format
-`zahnstange(modul, laenge, hoehe, breite, eingriffswinkel=20, schraegungswinkel=0)`
+`rack_and_pinion(modul, rack_length, gear_teeth, rack_height, gear_bore, width, pressure_angle=20, helix_angle=0, together_built=true, optimized=true)`
 
 #### Parameters
 * `modul` = gear module = height of the tooth above the pitch line/pitch circle = 25.4 / diametrical pitch = circular pitch / π
@@ -103,12 +111,14 @@ This script adjusts the pressure angle in the transverse section to the helix an
 
 ## Parametric Involute Ring Gear
 
+<img src="examples/ring_gear.png" alt="Ring Gear" />
+
 Creates a herringbone ring gear without profile displacement. Helical gears run more smoothly than gears with straight teeth. However, they also create axial loads which the bearings must be designed to contain. Recommendations for the helix angle depending on the module can be found in DIN 3978.
 
 This script adjusts the pressure angle in the transverse section to the helix angle: e.g. with a 20° helix angle, a pressure angle of 20° becomes a pressure angle of 21.17° in the transverse section.
 
 ### Format
-`hohlrad(modul, zahnzahl, breite, randbreite, eingriffswinkel=20, schraegungswinkel=0)`
+`ring_gear(modul, tooth_number, width, rim_width, pressure_angle=20, helix_angle=0, shortening_factor=0.6)`
 
 #### Parameters
 * `modul` = gear module = height of the tooth above the pitch circle = 25.4 / diametrical pitch = circular pitch / π
@@ -122,12 +132,14 @@ This script adjusts the pressure angle in the transverse section to the helix an
 
 ## Parametric Herringbone Involute Ring Gear
 
+<img src="examples/herringbone_ring_gear.png" alt="Herringbone Ring Gear" />
+
 Creates a herringbone ring gear without profile displacement. A ring and spur gear mesh if they have the same module and opposite helix angels. Herringbone gears run more smoothly than gear with straight teeth. They also do not create axial load like helical gears do.
 
 A helix angle, if used, should be set between between 30° and 45°. Recommendations for the helix angle depending on the module can be found in DIN 3978. This script adjusts the pressure angle in the transverse section to the helix angle: e.g. with a 30° helix angle, a pressure angle of 20° becomes a pressure angle of 22.80° in the transverse section.
 
 ### Format
-`pfeilhohlrad(modul, zahnzahl, breite, randbreite, eingriffswinkel=20, schraegungswinkel=0)`
+`herringbone_ring_gear(modul, tooth_number, width, rim_width, pressure_angle=20, helix_angle=0)`
 
 #### Parameters
 * `modul` = gear module = height of the tooth above the pitch circle = 25.4 / diametrical pitch = circular pitch / π
@@ -140,6 +152,8 @@ A helix angle, if used, should be set between between 30° and 45°. Recommendat
 
 
 ## Parametric Planetary Gear using Involute Tooth Geometry and Herringbone Shape
+
+<img src="examples/planetary_gear.png" alt="Planetary Gear" />
 
 This script calculates both the ring gear as well as, if required, the number and geometry of the planetary gears from the number of teeth on the sun and planets. For a module of <i>m</i>, <i>z<sub>s</sub></i> teeth for the sun and <i>z<sub>p</sub></i> teeth for the planets, the centre distance will be
 <sup>m</sub></sup>/<sub>2</sub>·(z<sub>s</sub> + z<sub>p</sub>)
@@ -157,7 +171,7 @@ To avoid the gears sticking in a 3D print, particularly sticking of the planet g
 The gears can also be kept from sticking by a sufficiently large clearance ("Spiel"); a sufficient clearance also avoids meshing problems. Clearance can be left smaller if the 3D printer offers good resolution, however experience shows that it should not be less than 5%.
 
 ### Format
-`planetengetriebe(modul, zahnzahl_sonne, zahnzahl_planet, breite, randbreite, bohrung, eingriffswinkel=20, schraegungswinkel=0, zusammen_gebaut=true, optimiert=true)`
+`planetary_gear(modul, sun_teeth, planet_teeth, number_planets, width, rim_width, bore, pressure_angle=20, helix_angle=0, together_built=true, optimized=true)`
 
 #### Parameters
 * `spiel` = clearance between teeth as a fraction of their width (0 = no clearance)
@@ -176,12 +190,14 @@ The gears can also be kept from sticking by a sufficiently large clearance ("Spi
 
 ## Parametric Herringbone Bevel Gear with Spherical Involute Geometry
 
+<img src="examples/bevel_herringbone_gear.png" alt="Herringbone Bevel Gear" />
+
 This script creates a herringbone bevel gear with spherical involute teeth geometry. Two gears will mesh if their modules are the same and their helix angles opposite. Herringbone gears run more smoothly than gear with straight teeth. They also do not create axial load like helical gears do. Recommendations for the helix angle depending on the module can be found in DIN 3978.
 
 This script adjusts the pressure angle in the transverse section to the helix angle: e.g. with a 30° helix angle, a pressure angle of 20° becomes a pressure angle of 22.80° in the transverse section.
 
 ### Format
-`pfeilkegelrad(modul, zahnzahl, teilkegelwinkel, zahnbreite, bohrung, eingriffswinkel=20, schraegungswinkel=0)`
+`bevel_herringbone_gear(modul, tooth_number, partial_cone_angle, tooth_width, bore, pressure_angle=20, helix_angle=0)`
 
 #### Parameters
 * `modul` = gear module = height of the gear teeth above the pitch cone = 25.4 / diametrical pitch = circular pitch / π
@@ -195,10 +211,12 @@ This script adjusts the pressure angle in the transverse section to the helix an
 
 ## Parametric Pair of Bevel Gears
 
+<img src="examples/bevel_gear_pair.png" alt="Bevel Gear Pair" />
+
 This script calculates both the gear and the pinion of a bevel gear pair, using the gears' module and their numbers of teeth. The preset angle of 90° between the axes of both gears can be varied. It is possible to calculate the pair both assembled for design as well as disassembled for printing.
 
 ### Format
-`kegelradpaar(modul, zahnzahl_rad, zahnzahl_ritzel, achsenwinkel=90, zahnbreite, bohrung, eingriffswinkel = 20, schraegungswinkel=0, zusammen_gebaut=true)`
+`bevel_gear_pair(modul, gear_teeth, pinion_teeth, axis_angle=90, tooth_width, gear_bore, pinion_bore, pressure_angle=20, helix_angle=0, together_built=true)`
 
 #### Parameters
 * `modul` = gear module = height of the gear teeth above the pitch cone = 25.4 / diametrical pitch = circular pitch / π
@@ -215,10 +233,12 @@ This script calculates both the gear and the pinion of a bevel gear pair, using 
 
 ## Parametric Pair of Herringbone Bevel Gears
 
+<img src="examples/bevel_herringbone_gear_pair.png" alt="Herringbone Bevel Gear Pair" />
+
 This script calculates both the gear and the pinion of a herringbone bevel gear pair, using the gears' module and their numbers of teeth. The preset angle of 90° between the axes of both gears can be varied. It is possible to calculate the pair both assembled for design as well as disassembled for printing.
 
 ### Format
-`pfeilkegelradpaar(modul, zahnzahl_rad, zahnzsahl_ritzel, achsenwinkel=90, zahnbreite, bohrung, eingriffswinkel = 20, schraegungswinkel=0, zusammen_gebaut=true)`
+`bevel_herringbone_gear_pair(modul, gear_teeth, pinion_teeth, axis_angle=90, tooth_width, gear_bore, pinion_bore, pressure_angle=20, helix_angle=10, together_built=true)`
 
 #### Parameters
 * `modul` = gear module = height of the gear teeth above the pitch cone = 25.4 / diametrical pitch = circular pitch / π
@@ -235,6 +255,8 @@ This script calculates both the gear and the pinion of a herringbone bevel gear 
 
 ## Parametric Worm
 
+<img src="examples/worm.png" alt="Worm" />
+
 Creates a cylidrical worm (archimedean spiral) following DIN 3975.
 
 The worm's pitch circle r can be calculated out of its module m, number of threads z and lead angle γ:
@@ -242,7 +264,7 @@ The worm's pitch circle r can be calculated out of its module m, number of threa
 r = m·z·<sup>1</sup>/<sub>2sinγ</sub>
 
 ### Format
-`schnecke(modul, gangzahl, laenge, bohrung, eingriffswinkel=20, steigungswinkel=10, zusammen_gebaut=true)`
+`worm(modul, thread_starts, length, bore, pressure_angle=20, lead_angle, together_built=true)`
 
 #### Parameters
 * `modul` = height of the thread above the pitch circle
@@ -257,10 +279,12 @@ r = m·z·<sup>1</sup>/<sub>2sinγ</sub>
 
 ##  Worm Gear Set  (Worm and Pinion)
 
+<img src="examples/worm_gear.png" alt="Worm Gear Set" />
+
 Creates a set of one worm gear and a pinion. The pinion is a normal spur gear without globoid geometry.
 
 ### Format
-`module schneckenradsatz(modul, zahnzahl, gangzahl, breite, laenge, bohrung_schnecke, bohrung_rad, eingriffswinkel=20, steigungswinkel, optimiert=true, zusammen_gebaut=true)`
+`worm_gear(modul, tooth_number, thread_starts, width, length, worm_bore, gear_bore, pressure_angle=20, lead_angle, optimized=true, together_built=true, show_spur=1, show_worm=1)`
 
 ### Parameter
 
