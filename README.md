@@ -32,6 +32,28 @@ The rack module matches the gear module directly, without additional helix-based
 * `helix_angle` = bevel angle perpendicular to the rack's length; 0° = straight teeth
 
 
+## Parametric Herringbone Gear Rack
+
+<img src="examples/herringbone_rack.png" alt="Herringbone Rack" width="300" />
+
+Creates a herringbone gear rack by mirroring two helical racks.
+
+This script adjusts the pressure angle in the transverse section to the helix angle: e.g. with a 20° helix angle, a pressure angle of 20° becomes a pressure angle of 21.17° in the transverse section.
+The rack module matches the gear module directly, without additional helix-based scaling.
+
+### Format
+
+`herringbone_rack(modul, length, height, width, pressure_angle=20, helix_angle=45)`
+
+#### Parameters
+* `modul` = height of the tooth above the pitch line
+* `length` = length of the rack
+* `height` = height from bottom to the pitch line
+* `width` = face width
+* `pressure_angle` = pressure angle, standard value = 20° according to DIN 867. Should not be greater than 45°.
+* `helix_angle` = bevel angle perpendicular to the rack's length; 0° = straight teeth
+
+
 ## Parametric Involute Spur Gear
 
 <img src="examples/spur_gear.png" alt="Spur Gear" width="300" />

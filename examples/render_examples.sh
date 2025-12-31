@@ -12,12 +12,34 @@ else
   exit 1
 fi
 
-for scad in "${SCRIPT_DIR}"/*.scad; do
+render_one() {
+  local scad="$1"
+  local base
   base="$(basename "${scad}" .scad)"
   if [[ "${base}" == "demo" ]]; then
-    continue
+    return 0
   fi
-  out="${SCRIPT_DIR}/${base}.png"
+  local out="${SCRIPT_DIR}/${base}.png"
   "${OPENSCAD_BIN}" -o "${out}" --imgsize 800,800 "${scad}"
   echo "Rendered ${out}"
-done
+}
+
+if [[ "${1:-}" != "" ]]; then
+  target="${1}"
+  if [[ "${target}" != /* ]]; then
+    if [[ "${target}" != *.scad ]]; then
+      target="${SCRIPT_DIR}/${target}.scad"
+    else
+      target="${SCRIPT_DIR}/${target}"
+    fi
+  fi
+  if [[ ! -f "${target}" ]]; then
+    echo "Error: SCAD file not found: ${target}" >&2
+    exit 1
+  fi
+  render_one "${target}"
+else
+  for scad in "${SCRIPT_DIR}"/*.scad; do
+    render_one "${scad}"
+  done
+fi
