@@ -117,7 +117,7 @@ module rack(modul, length, height, width, pressure_angle = 20, helix_angle = 0) 
     // Dimension Calculations
     modul=modul*(1-clearance);
     c = modul / 6;                                              // Tip Clearance
-    mx = modul/cos(helix_angle);                          // Module Shift by Helix Angle in the X-Direction
+    mx = modul;                                           // Match gear module calculations for herringbone rack
     a = 2*mx*tan(pressure_angle)+c*tan(pressure_angle);       // Flank Width
     b = pi*mx/2-2*mx*tan(pressure_angle);                      // Tip Width
     x = width*tan(helix_angle);                          // Topside Shift by Helix Angle in the X-Direction
