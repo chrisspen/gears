@@ -11,20 +11,19 @@ HERRINGBONE_RACK_SCAD_SNIPPET = """\
 include <gears.scad>
 modul = 1;
 gear_teeth = 30;
-width = 10;
-rack_length = 80;
-rack_height = 6;
+width = 20;
+rack_length = 60;
+rack_height = 5;
 helix_angle = 30;
-
-distance = modul * gear_teeth / 2;
+pressure_angle = 20;
 
 intersection(){
     rotate([0,180,0])
-        translate([.2, -20, -10])
-            herringbone_rack(modul=1, length=60, height=5, width=20, pressure_angle=20, helix_angle=30);
-    translate([0, -4.5, -20/2])
+        translate([.5, -20, -10])
+            herringbone_rack(modul=modul, length=rack_length, height=rack_height, width=width, pressure_angle=pressure_angle, helix_angle=helix_angle);
+    translate([0, -4.75, -20/2])
         rotate([0,0,4])
-            herringbone_gear (modul=1, tooth_number=gear_teeth, width=20, bore=4, pressure_angle=20, helix_angle=30, optimized=true);
+            herringbone_gear (modul=modul, tooth_number=gear_teeth, width=width, bore=4, pressure_angle=pressure_angle, helix_angle=helix_angle, optimized=true);
 }
 """
 
