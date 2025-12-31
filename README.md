@@ -17,6 +17,7 @@ A library for the parametric creation of gear racks, spur-, ring-, bevel- and wo
 Creates a gear rack.
 
 This script adjusts the pressure angle in the transverse section to the helix angle: e.g. with a 20° helix angle, a pressure angle of 20° becomes a pressure angle of 21.17° in the transverse section.
+The rack module matches the gear module directly, without additional helix-based scaling.
 
 ### Format
 
