@@ -117,9 +117,10 @@ module rack(modul, length, height, width, pressure_angle = 20, helix_angle = 0) 
     // Dimension Calculations
     modul=modul*(1-clearance);
     c = modul / 6;                                              // Tip Clearance
-    mx = modul/cos(helix_angle);                          // Module Shift by Helix Angle in the X-Direction
-    a = 2*mx*tan(pressure_angle)+c*tan(pressure_angle);       // Flank Width
-    b = pi*mx/2-2*mx*tan(pressure_angle);                      // Tip Width
+    mx = modul;                                                 // Keep module consistent with gears; no helix scaling
+    alpha_spur = atan(tan(pressure_angle)/cos(helix_angle));   // Helix Angle in Transverse Section
+    a = 2*mx*tan(alpha_spur)+c*tan(alpha_spur);                 // Flank Width
+    b = pi*mx/2-2*mx*tan(alpha_spur);                           // Tip Width
     x = width*tan(helix_angle);                          // Topside Shift by Helix Angle in the X-Direction
     nz = ceil((length+abs(2*x))/(pi*mx));                       // Number of Teeth
 
@@ -143,6 +144,74 @@ module rack(modul, length, height, width, pressure_angle = 20, helix_angle = 0) 
             };
             translate([abs(x),-height+modul-0.5,-0.5]){
                 cube([length,height+modul+1,width+1]);          // Cuboid which includes the Volume of the Rack
+            }
+        };
+    };
+}
+
+/* Involute rack; uses involute flank geometry to better match involute gears
+    modul = Height of the Tooth Tip above the Rolling LIne
+    length = Length of the Rack
+    height = Height of the Rack to the Pitch Line
+    width = Width of a Tooth
+    pressure_angle = Pressure Angle, Standard = 20° according to DIN 867. Should not exceed 45°.
+    helix_angle = Helix Angle of the Rack Transverse Axis; 0° = Spur Teeth */
+module involute_rack(modul, length, height, width, pressure_angle = 20, helix_angle = 0) {
+
+    // Dimension Calculations
+    c = modul / 6;                                              // Tip Clearance
+    mx = modul;                                                 // Keep module consistent with gears; no helix scaling
+    alpha_spur = atan(tan(pressure_angle)/cos(helix_angle));   // Helix Angle in Transverse Section
+    pitch = pi*mx;                                              // Pitch length
+    x_shift = width*tan(helix_angle);                           // Topside Shift by Helix Angle in the X-Direction
+    x_slope = (width == 0) ? 0 : x_shift/width;                 // Avoid division by zero for degenerate widths
+    nz = ceil((length+abs(2*x_shift))/pitch);                   // Number of Teeth
+    virtual_teeth = (nz < 12) ? 12 : nz;                        // Stabilize involute curvature for short racks
+
+    // Virtual gear parameters for involute flank generation
+    d = mx * virtual_teeth;                                     // Pitch Circle Diameter
+    r = d / 2;                                                  // Pitch Circle Radius
+    rb = r * cos(alpha_spur);                                   // Base Circle Radius
+    da = (mx < 1) ? d + mx * 2.2 : d + mx * 2;                   // Tip Diameter
+    ra = da / 2;                                                // Tip Circle Radius
+    rho_ra = acos(rb/ra);                                       // Maximum Rolling Angle
+    rho_r = acos(rb/r);                                         // Rolling Angle at Pitch Circle
+    phi_r = grad(tan(rho_r)-radian(rho_r));                     // Angle to Point of Involute on Pitch Circle
+    step = rho_ra/16;                                           // Involute is divided into 16 pieces
+    tooth_width = (180*(1-clearance))/virtual_teeth + 2*phi_r;  // Tooth thickness in degrees
+    angle_shift = -phi_r - 90*(1-clearance)/virtual_teeth;      // Center tooth around zero degrees
+
+    y_root = -(mx + c);                                         // Root Line
+    y_base = rb - r;                                            // Base Line (involute start)
+
+    // 2D involute tooth profile for a single pitch
+    points_2d = concat(
+        [[0, y_root], [pitch, y_root], [pitch, y_base]],
+        [for (rho = [0:step:rho_ra]) let (
+            angle = tooth_width - ev(rb, rho)[1] + angle_shift,
+            radius = ev(rb, rho)[0]
+        ) [r*radian(angle) + pitch/2, radius - r]],
+        [for (rho = [rho_ra:-step:0]) let (
+            angle = ev(rb, rho)[1] + angle_shift,
+            radius = ev(rb, rho)[0]
+        ) [r*radian(angle) + pitch/2, radius - r]],
+        [[0, y_base]]
+    );
+
+    translate([-pitch*(nz-1)/2,0,0]){
+        intersection(){
+            copier([1,0,0], nz, pitch, 0){
+                multmatrix(m = [
+                    [1,0,x_slope,0],
+                    [0,1,0,0],
+                    [0,0,1,0],
+                    [0,0,0,1]
+                ])
+                    linear_extrude(height = width, convexity = 10)
+                        polygon(points_2d);
+            };
+            translate([abs(x_shift),-height-0.5,-0.5]){
+                cube([length,height+mx+1,width+1]);             // Cuboid which includes the Volume of the Rack
             }
         };
     };
@@ -334,9 +403,9 @@ module herringbone_rack(modul, length, height, width, pressure_angle = 20, helix
  width = width/2;
  translate([0,0,width]){
         union(){
-            rack(modul, length, height, width, pressure_angle, helix_angle);      // bottom Half
+            involute_rack(modul, length, height, width, pressure_angle, helix_angle);      // bottom Half
             mirror([0,0,1]){
-                rack(modul, length, height, width, pressure_angle, helix_angle);  // top Half
+                involute_rack(modul, length, height, width, pressure_angle, helix_angle);  // top Half
             }
         }
     }
