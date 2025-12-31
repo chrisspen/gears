@@ -199,21 +199,29 @@ module involute_rack(modul, length, height, width, pressure_angle = 20, helix_an
     );
 
     translate([-pitch*(nz-1)/2,0,0]){
-        intersection(){
-            copier([1,0,0], nz, pitch, 0){
-                multmatrix(m = [
-                    [1,0,x_slope,0],
-                    [0,1,0,0],
-                    [0,0,1,0],
-                    [0,0,0,1]
-                ])
-                    linear_extrude(height = width, convexity = 10)
-                        polygon(points_2d);
+        union(){
+            intersection(){
+                copier([1,0,0], nz, pitch, 0){
+                    multmatrix(m = [
+                        [1,0,x_slope,0],
+                        [0,1,0,0],
+                        [0,0,1,0],
+                        [0,0,0,1]
+                    ])
+                        linear_extrude(height = width, convexity = 10)
+                            polygon(points_2d);
+                };
+                translate([abs(x_shift),-height-0.5,-0.5]){
+                    cube([length,height+mx+1,width+1]);         // Cuboid which includes the Volume of the Rack
+                }
             };
-            translate([abs(x_shift),-height-0.5,-0.5]){
-                cube([length,height+mx+1,width+1]);             // Cuboid which includes the Volume of the Rack
+            body_height = height - (mx + c);
+            if (body_height > 0) {
+                translate([abs(x_shift),-height,0]){
+                    cube([length,body_height,width]);           // Rectangular rack body
+                }
             }
-        };
+        }
     };
 }
 
