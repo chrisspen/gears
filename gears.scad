@@ -115,7 +115,6 @@ module copier(vect, number, distance, winkel){
 module rack(modul, length, height, width, pressure_angle = 20, helix_angle = 0) {
 
     // Dimension Calculations
-    modul=modul*(1-clearance);
     c = modul / 6;                                              // Tip Clearance
     mx = modul;                                                 // Keep module consistent with gears; no helix scaling
     alpha_spur = atan(tan(pressure_angle)/cos(helix_angle));   // Helix Angle in Transverse Section
