@@ -613,7 +613,7 @@ module ring_gear(modul, tooth_number, width, rim_width, pressure_angle = 20, hel
             union(){
                 tooth_width = (180*(1+clearance))/tooth_number+2*phi_r;
                 circle(rf);                                         // Root Circle
-                for (rot = [0:tau:360]){
+                for (rot = [0:tau:360 - tau]){
                     rotate (rot) {                                  // Copy and Rotate "Number of Teeth"
                         polygon( concat(
                             [[0,0]],
