@@ -727,8 +727,10 @@ module planetary_gear(modul, sun_teeth, planet_teeth, number_planets, width, rim
     tooth_width = Width of the Teeth from the Outside toward the apex of the Cone
     bore = Diameter of the Center Hole
     pressure_angle = Pressure Angle, Standard = 20° according to DIN 867. Should not exceed 45°.
-    helix_angle = Helix Angle, Standard = 0° */
-module bevel_gear(modul, tooth_number, partial_cone_angle, tooth_width, bore, pressure_angle = 20, helix_angle=0) {
+    helix_angle = Helix Angle, Standard = 0°
+    addendum_factor = Height of the Tooth Tip over the Partial Cone in Multiples of modul;
+                      Standard = 1.1 for modul < 1, otherwise 1 */
+module bevel_gear(modul, tooth_number, partial_cone_angle, tooth_width, bore, pressure_angle = 20, helix_angle=0, addendum_factor=undef) {
 
     // Dimension Calculations
     d_outside = modul * tooth_number;                                    // Part Cone Diameter at the Cone Base,
@@ -739,7 +741,8 @@ module bevel_gear(modul, tooth_number, partial_cone_angle, tooth_width, bore, pr
     r_inside = r_outside*rg_inside/rg_outside;
     alpha_spur = atan(tan(pressure_angle)/cos(helix_angle));// Helix Angle in Transverse Section
     delta_b = asin(cos(alpha_spur)*sin(partial_cone_angle));          // Base Cone Angle
-    da_outside = (modul <1)? d_outside + (modul * 2.2) * cos(partial_cone_angle): d_outside + modul * 2 * cos(partial_cone_angle);
+    addendum = is_undef(addendum_factor) ? ((modul <1)? 1.1 : 1) : addendum_factor;
+    da_outside = d_outside + modul * addendum * 2 * cos(partial_cone_angle);
     ra_outside = da_outside / 2;
     delta_a = asin(ra_outside/rg_outside);
     c = modul / 6;                                                  // Tip Clearance
@@ -870,23 +873,35 @@ module bevel_herringbone_gear(modul, tooth_number, partial_cone_angle, tooth_wid
     height_fk = rk*height_k/(height_k*tan(delta_f)+rk);            // height of the Complementary Truncated Cones
 
     modul_inside = modul*(1-tooth_width/rg_outside);
-    
-    lower_cone_angle = partial_cone_angle - 1; // Correct for mirroring misalignment
+
+    // Both rings must use the same tip height, even if only modul_inside drops below 1
+    addendum_factor = (modul <1)? 1.1 : 1;
+
+    // Rise of the inner ring that puts its cone apex exactly on the apex of the outer ring
+    height_inside = tooth_width*cos(delta_f);
+    rf_inside = (rg_outside-tooth_width)*sin(delta_f);            // Radius of the Cone Foot of the inner ring
 
     union(){
         // Outer ring
-        if(1)
         bevel_gear(
             modul,
             tooth_number,
-            lower_cone_angle,
+            partial_cone_angle,
             tooth_width,
             bore,
             pressure_angle,
-            helix_angle);
-        // Inner ring
-        if(1)
+            helix_angle,
+            addendum_factor);
+        // Root cone between the truncated cone of the outer ring and the inner ring
         translate([0,0,height_f-height_fk])
+            difference(){
+                linear_extrude(height=height_inside-(height_f-height_fk), scale=rf_inside/rfk) circle(rfk*1.001);
+                translate([0,0,-1]){
+                    cylinder(h = height_inside-(height_f-height_fk)+2, r = bore/2);
+                }
+            }
+        // Inner ring
+        translate([0,0,height_inside])
             rotate(a=-gamma,v=[0,0,1])
                 bevel_gear(
                     modul_inside,
@@ -895,7 +910,8 @@ module bevel_herringbone_gear(modul, tooth_number, partial_cone_angle, tooth_wid
                     tooth_width,
                     bore,
                     pressure_angle,
-                    -helix_angle);
+                    -helix_angle,
+                    addendum_factor);
     }
 }
 
